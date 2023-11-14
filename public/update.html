@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update</title>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      input, button {
+        margin: 10px !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="container">
+      <h1>Update book</h1>
+      <input class="form-control" type="text" id="bookname" />
+      <input class="form-control" type="text" id="author" />
+      <input class="form-control" type="text" id="type" />
+
+      <button  class="btn btn-primary update">Update</button>
+    </div>
+  </body>
+  <script>
+    async function main() {
+      const query = new URLSearchParams(window.location.search);
+      const res = await fetch("http://localhost:9000/book/" + query.get("id"));
+      let data = await res.json();
+      data = data.data;
+
+      let bookname = document.getElementById("bookname");
+      let author = document.getElementById("author");
+      let type = document.getElementById("type");
+
+      bookname.value = data.bookname;
+      author.value = data.author;
+      type.value = data.type;
+
+      // delete item from table
+      const container = document.getElementById("container");
+
+      container.addEventListener("click", async function (event) {
+        if (event.target && event.target.matches("button.deleteBtn")) {
+          const id = event.target.dataset.id;
+          deleteBook(id);
+        }
+
+        if (event.target && event.target.matches("button.update")) {
+          
+            const opt =  {
+                id: data.id,
+                author: document.getElementById("author").value,
+                bookname: document.getElementById("bookname").value,
+                type: document.getElementById("type").value
+            }
+
+            await fetch("http://localhost:9000/update", {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify(opt)
+            })
+
+            alert("Book has been updated");
+
+            window.location.assign("./administrator.html")
+
+
+          
+        }
+      });
+    }
+    main();
+  </script>
+
+  <script
+    src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"
+  ></script>
+</html>

@@ -1,0 +1,39 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#loginForm {
+    height: 600px;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center !important;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 10px;
+}
+
+#loginForm input, #loginForm button, select {
+    margin-top: 10px;
+}
+
+#loginForm input {
+    width: 80%;
+}
+
+#loginForm button {
+    width: 50%;
+}
